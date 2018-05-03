@@ -19,16 +19,23 @@ class Question(models.Model):
 
     def get_leading_choice(self):
         """Returns the choice object with the most votes."""
-        pass  # Requires implementation!
+        max_vote = 0
+        top_choice = 0
+        choices = self.get_choices()
+        for choice in choices:
+            if choice.votes > max_vote:
+                top_choice = choice
+
+        return top_choice
 
     def get_leading_choice_pct(self):
         """Returns the percentage of votes for the leading choice."""
         total_votes = 1.0
         for choice in self.get_choices():
-            total_votes += votes
+            total_votes += choice.votes
         
         leader = self.get_leading_choice()
-        return leader.votes / total_votes
+        return leader.votes / float(total_votes)
 
     def __str__(self):
         return self.question_text
